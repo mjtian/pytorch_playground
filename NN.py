@@ -5,7 +5,7 @@ import torch.nn.functional as F
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
-        self.conv1 = nn.Conv2d(1, 6, 5)
+        self.conv1 = nn.Conv2d(1, 6, 5) #(nsanples*nchannels*height*width)
         self.conv2 = nn.Conv2d(6, 16, 5)
         self.fc1 = nn.Linear(16*5*5, 120)
         self.fc2 = nn.Linear(120, 84)
@@ -29,5 +29,16 @@ class Net(nn.Module):
 
 net = Net()
 print (net)
+
+params = list(net.parameters())
+print (len(params))
+print (params[0].size) #conv1 .weight
+
+input = torch.randn(1 , 1, 32, 32) #bach size,color channel，w，h
+out = net(input)
+print (out)
+
+net.zero_grad()
+out.backward(torch.randn(1, 10))
 
 
